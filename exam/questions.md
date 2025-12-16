@@ -246,8 +246,8 @@ $$
 
 
 ## 18. Обобщение метода опорных векторов с заменой функции-ядра
-<img src="
-https://github.com/Liliiax/ml-2025/blob/023ab8e2cc887142b84fdaf63e1a3571aed1dbf5/exam/src/svm4.png" width="80%"/>
+
+<img src="https://github.com/Liliiax/ml-2025/blob/023ab8e2cc887142b84fdaf63e1a3571aed1dbf5/exam/src/svm4.png" width="80%"/>
 
 ## 19. Методы снижения размерности признакового пространства
 ## 20. Линейный метод главных компонент (PCA)
