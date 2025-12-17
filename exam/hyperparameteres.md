@@ -16,3 +16,11 @@ from sklearn.linear_model import LinearRegression
 > **fit_intercept**, **alphas** [диапазон значений регуляризации, которые пытается найти модель], **cv** [количество фолдов в кросс-валидации], **max_iter**  [максимальное количество итераций]
 
 ## ElasticNetCV() 
+## MinMaxScaler() StandardScaler()
+## least_squares()
+## OneHotEncoder() ColumnTransformer()
+## LogisticRegression()
+## PCA() KernelPCA()
+## SVC()
+## KMeans() 
+## DBSCAN() 
