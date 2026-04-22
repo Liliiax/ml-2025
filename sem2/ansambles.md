@@ -45,3 +45,70 @@ $$==\frac{1}{N^2}\mathbb{E}_x\left(\sum^N_{j=1}\varepsilon^2_j(x)+ \sum_{i\neq j
 другого.
 
 Такое разложение ошибки носит название *разложения на смещение и разброс*
+
+* $$X = (x_i, y_i)_{i=1}^l -$$   конечная выборка с вещественными ответами
+* $$p(x,y)-$$ распределение на пространстве всех объектов $$\mathbb{X}\cdot\mathbb{Y}$$
+
+  Рассмотрим квадратичную функцию потерь и соответствующий ей среднеквадратичный риск
+  * $$L(y, a) =(y − a(x))^2$$
+  * $$R(a)=\mathbb{E}_{x,y} \left[(y − a(x))^2\right]=\int _{\mathbb{X}} \int _\mathbb{Y} p(x, y)(y − a(x))^2dxdy$$
+    
+Данный функционал усредняет ошибку модели в каждой точке пространства и для каждого возможного ответа y. На практике мы не можем
+вычислить данный функционал, поскольку распределение `p(x, y)` неизвестно. Но в теории он позволяет измерить качество модели на всех возможных объектах, а не только на обучающей выборке.
+
+## Минимум среднеквадратичного риска
+
+Покажем, что минимум среднеквадратичного риска достигается на функции, возвращающей условное матожидание ответа при фиксированном объекте:
+
+$$
+a_*(x) = \mathbb{E}[y \mid x] = \int_Y y  p(y \mid x)  dy = \arg \min_a R(a).
+$$
+
+Преобразуем функцию потерь:
+
+$$
+\begin{aligned}
+L(y, a(x)) &= (y - a(x))^2 = \bigl(y - \mathbb{E}(y \mid x) + \mathbb{E}(y \mid x) - a(x)\bigr)^2 = \\
+&= (y - \mathbb{E}(y \mid x))^2 + 2\bigl(y - \mathbb{E}(y \mid x)\bigr)\bigl(\mathbb{E}(y \mid x) - a(x)\bigr) + (\mathbb{E}(y \mid x) - a(x))^2.
+\end{aligned}
+$$
+
+Подставляя ее в функционал среднеквадратичного риска, получаем:
+
+$$
+\begin{aligned}
+R(a) &= \mathbb{E}_{x,y} L(y, a(x)) = \\
+&= \mathbb{E}_{x,y} (y - \mathbb{E}(y \mid x))^2 + \mathbb{E}_{x,y} (\mathbb{E}(y \mid x) - a(x))^2 \\
+&\quad + 2\,\mathbb{E}_{x,y} \bigl(y - \mathbb{E}(y \mid x)\bigr)\bigl(\mathbb{E}(y \mid x) - a(x)\bigr).
+\end{aligned}
+$$
+
+Разберемся сначала с последним слагаемым. Перейдём от матожидания $\mathbb{E}_{x,y}[f(x,y)]$ к цепочке матожиданий:
+
+$$
+\mathbb{E}_x \mathbb{E}_y[f(x,y) \mid x]=\int_X \left( \int_Y f(x,y) \, p(y \mid x) \, dy \right) p(x) \, dx
+$$
+
+и заметим, что величина $\bigl(\mathbb{E}(y \mid x) - a(x)\bigr)$ не зависит от $y$, и поэтому ее можно вынести за матожидание по $y$:
+
+$$
+\begin{aligned}
+&\mathbb{E}_x \mathbb{E}_y \left[ \bigl(y - \mathbb{E}(y \mid x)\bigr)\bigl(\mathbb{E}(y \mid x) - a(x)\bigr) \mid x \right] = \\
+&= \mathbb{E}_x \left[ \bigl(\mathbb{E}(y \mid x) - a(x)\bigr)  \mathbb{E}_y \bigl[ y - \mathbb{E}(y \mid x) \mid x \bigr] \right] = \\
+&= \mathbb{E}_x \left[ \bigl(\mathbb{E}(y \mid x) - a(x)\bigr) \bigl( \mathbb{E}(y \mid x) - \mathbb{E}(y \mid x) \bigr) \right] = 0.
+\end{aligned}
+$$
+
+Получаем, что функционал среднеквадратичного риска имеет вид
+
+$$
+R(a) = \mathbb{E}_{x,y} (y - \mathbb{E}(y \mid x))^2 + \mathbb{E}_{x,y} (\mathbb{E}(y \mid x) - a(x))^2.
+$$
+
+От алгоритма $a(x)$ зависит только второе слагаемое, и оно достигает своего минимума, если $a(x) = \mathbb{E}(y \mid x)$. Таким образом, оптимальная модель регрессии для квадратичной функции потерь имеет вид
+
+$$
+a_*(x) = \mathbb{E}(y \mid x) = \int_Y y \, p(y \mid x) \, dy.
+$$
+
+Иными словами, мы должны провести «взвешенное голосование» по всем возможным ответам, причем вес ответа равен его апостериорной вероятности.
